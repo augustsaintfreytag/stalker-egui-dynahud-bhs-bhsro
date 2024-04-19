@@ -1814,7 +1814,7 @@ local function update_graphical_hud()
 	--update_medical_hud() (Disabled)
 end
 
-local function update_hud()
+function update_hud()
 	if showtexthud >= 1 then
 		update_text_hud()
 	else
@@ -1932,11 +1932,13 @@ local function actor_on_footstep(material, power, hud_view, flags)
 			if zzz_player_injuries_mcm.get_config("new_voice_sounds") then
 				local helmet = (db.actor:item_in_slot(12) or db.actor:get_current_outfit())
 				local sound_play = math.random(1, 13)
+
 				if helmet then
-					muffle = ""
+					muffle = "m_"
 				else
 					muffle = ""
 				end
+
 				file = "bhs\\" .. muffle .. "pain_" .. sound_play
 			else
 				file = "actor\\pain_" .. sound_play

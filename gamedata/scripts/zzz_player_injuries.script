@@ -1828,27 +1828,25 @@ function update_hud()
 end
 
 function on_key_press(dik)
-	if dik ~= DIK_keys.DIK_H then
-		return
-	end
-
-	if showtexthud > 0 then
-		healthstatus = not healthstatus
-	else
-		if show_hud_type == 0 then
-			show_hud_type = 1
-			show_hud_change_time = time_global()
-		elseif show_hud_type == 1 then
-			show_hud_type = 2
-			show_hud_change_time = time_global()
-		elseif show_hud_type == 2 then
-			show_hud_type = 0
-			show_hud_change_time = time_global()
+	if dik == DIK_keys.DIK_H then
+		if showtexthud > 0 then
+			healthstatus = not healthstatus
+		else
+			if show_hud_type == 0 then
+				show_hud_type = 1
+				show_hud_change_time = time_global()
+			elseif show_hud_type == 1 then
+				show_hud_type = 2
+				show_hud_change_time = time_global()
+			elseif show_hud_type == 2 then
+				show_hud_type = 0
+				show_hud_change_time = time_global()
+			end
 		end
-	end
 
-	xr_sound.set_sound_play(db.actor:id(), "pda_tips")
-	update_hud()
+		xr_sound.set_sound_play(db.actor:id(), "pda_tips")
+		update_hud()
+	end
 end
 
 local function actor_on_weapon_zoom_in(wpn) --maybe needed for sway idk

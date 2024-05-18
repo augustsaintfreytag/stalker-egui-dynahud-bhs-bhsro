@@ -190,6 +190,7 @@ healhelplist = {}
 healhelplist.lastregen = time_global()
 healhelplist.healtimer = 30000
 healhelplist.healpower = 0
+
 if medkits_heal_logic == 1 then
 	healhelplist.medkit = { head = 11, torso = 11, rightleg = 5, leftleg = 5, rightarm = 5, leftarm = 5, healpower = 1, healtimer = 6000 }
 	healhelplist.medkit_army = { head = 16, torso = 16, rightleg = 7, leftleg = 7, rightarm = 7, leftarm = 7, healpower = 1, healtimer = 4175 }
@@ -198,6 +199,7 @@ if medkits_heal_logic == 1 then
 	healhelplist.stimpack_army = { head = 16, torso = 16, rightleg = 7, leftleg = 7, rightarm = 7, leftarm = 7, healpower = 1, healtimer = 900 }
 	healhelplist.stimpack_scientic = { head = 16, torso = 16, rightleg = 7, leftleg = 7, rightarm = 7, leftarm = 7, healpower = 1, healtimer = 900 }
 end
+
 if rebirth_heal_logic == 1 then
 	healhelplist.rebirth = { head = 22, torso = 22, rightleg = 10, leftleg = 10, rightarm = 10, leftarm = 10, healpower = 0, healtimer = 772 }
 end
@@ -213,6 +215,7 @@ healonelist.lastregen = time_global()
 healonelist.healtimer = 30000
 healonelist.healamount = 0
 healonelist.healpower = 0
+
 if medkits_heal_logic == 2 then
 	healonelist.medkit = { healamount = 21, healtimer = 3180, healpower = 1 }
 	healonelist.medkit_army = { healamount = 32, healtimer = 2084, healpower = 1 }
@@ -222,9 +225,11 @@ if medkits_heal_logic == 2 then
 	healonelist.stimpack_scientic = { healamount = 32, healtimer = 468, healpower = 1 }
 	healonelist.survival_kit = { healamount = 60, healtimer = 1428, healpower = 1 }
 end
+
 if rebirth_heal_logic == 2 then
 	healonelist.rebirth = { healamount = 60, healtimer = 283, healpower = 0 }
 end
+
 healonelist.drug_coagulant = { healamount = 11, healtimer = 39818, healpower = 0 }
 healonelist.propital = { healamount = 21, healtimer = 6000, healpower = 0 }
 

@@ -189,20 +189,8 @@ hud_blink_timer.blinktime = 1000
 healhelplist = {}
 healhelplist.lastregen = time_global()
 healhelplist.healtimer = 30000
+healhelplist.healamount = 0
 healhelplist.healpower = 0
-
-if medkits_heal_logic == 1 then
-	healhelplist.medkit = { head = 11, torso = 11, rightleg = 5, leftleg = 5, rightarm = 5, leftarm = 5, healpower = 1, healtimer = 6000 }
-	healhelplist.medkit_army = { head = 16, torso = 16, rightleg = 7, leftleg = 7, rightarm = 7, leftarm = 7, healpower = 1, healtimer = 4175 }
-	healhelplist.medkit_scientic = { head = 16, torso = 16, rightleg = 7, leftleg = 7, rightarm = 7, leftarm = 7, healpower = 1, healtimer = 4175 }
-	healhelplist.stimpack = { head = 11, torso = 11, rightleg = 5, leftleg = 5, rightarm = 5, leftarm = 5, healpower = 1, healtimer = 1000 }
-	healhelplist.stimpack_army = { head = 16, torso = 16, rightleg = 7, leftleg = 7, rightarm = 7, leftarm = 7, healpower = 1, healtimer = 900 }
-	healhelplist.stimpack_scientic = { head = 16, torso = 16, rightleg = 7, leftleg = 7, rightarm = 7, leftarm = 7, healpower = 1, healtimer = 900 }
-end
-
-if rebirth_heal_logic == 1 then
-	healhelplist.rebirth = { head = 22, torso = 22, rightleg = 10, leftleg = 10, rightarm = 10, leftarm = 10, healpower = 0, healtimer = 772 }
-end
 
 -- Items that add 1 hp at a time to the most injured body part. Won't heal if body part is at 0 hp (=broken).
 -- For broken limbs you first need to use a bandage (=splint).
@@ -216,49 +204,14 @@ healonelist.healtimer = 30000
 healonelist.healamount = 0
 healonelist.healpower = 0
 
-if medkits_heal_logic == 2 then
-	healonelist.medkit = { healamount = 21, healtimer = 3180, healpower = 1 }
-	healonelist.medkit_army = { healamount = 32, healtimer = 2084, healpower = 1 }
-	healonelist.medkit_scientic = { healamount = 32, healtimer = 2084, healpower = 1 }
-	healonelist.stimpack = { healamount = 21, healtimer = 571, healpower = 1 }
-	healonelist.stimpack_army = { healamount = 32, healtimer = 468, healpower = 1 }
-	healonelist.stimpack_scientic = { healamount = 32, healtimer = 468, healpower = 1 }
-	healonelist.survival_kit = { healamount = 60, healtimer = 1428, healpower = 1 }
-end
-
-if rebirth_heal_logic == 2 then
-	healonelist.rebirth = { healamount = 60, healtimer = 283, healpower = 0 }
-end
-
-healonelist.drug_coagulant = { healamount = 11, healtimer = 39818, healpower = 0 }
-healonelist.propital = { healamount = 21, healtimer = 6000, healpower = 0 }
-
 -- First aid items:
 -- * instant effect
 -- * splintamount: how much hp is healed in total. Hp is added to body part with lowest health first.
 -- * maxarmleg and maxheadtorso = can only heal body part up to this hp level.
 splintlist = {}
-if splinting then
-	if tourniquet_is_splint then
-		splintlist.jgut = { splintamount = 1 }
-	end
-	if bandage_is_splint then
-		splintlist.bandage = { splintamount = 1 }
-		splintlist.bandage_army = { splintamount = 1 }
-	end
-	splintlist.splint = { splintamount = 1 }
-	splintlist.alu_splint = { splintamount = 1 }
-end
 
 surgerylist = {}
-if using_surgery then
-	surgerylist.surginst = { surgeryamount = 1 }
-	if cms_restores_hp_too then
-		surgerylist.cms = { surgeryamount = 4 }
-	else
-		surgerylist.cms = { surgeryamount = 1 }
-	end
-end
+
 
 -- Painkillers add painkillerpower as timedhp to limbs and double that to torso + head.
 -- timedhp are added to health when considering effects such as shaking hands and limping. Won't prevent death when torso or head hp = 0.
@@ -267,37 +220,12 @@ painkillerlist.lasttimestamp = time_global()
 painkillerlist.painkillerduration = 0
 painkillerlist.painkillerpower = 0
 painkillerlist.countdown_increments = 0 -- divides the total duration into x parts. Used to make sure painkillers actual duration stays closer to its set duration + up to length of one increment.
-painkillerlist.morphine = { painkillerpower = 7, painkillerduration = 1518000, countdown_increments = 92 }
-painkillerlist.rebirth = { painkillerpower = 7, painkillerduration = 305000, countdown_increments = 30 }
-painkillerlist.salicidic_acid = { painkillerpower = 6, painkillerduration = 1152000, countdown_increments = 80 }
-painkillerlist.tetanus = { painkillerpower = 4, painkillerduration = 202000, countdown_increments = 20 }
-painkillerlist.analgetic = { painkillerpower = 5, painkillerduration = 1042000, countdown_increments = 80 }
-painkillerlist.sj1 = { painkillerpower = 6, painkillerduration = 1500000, countdown_increments = 75 }
-painkillerlist.sj6 = { painkillerpower = 9, painkillerduration = 1500000, countdown_increments = 75 }
-painkillerlist.analgin = { painkillerpower = 2, painkillerduration = 180000, countdown_increments = 36 }
-painkillerlist.akvatab = { painkillerpower = 4, painkillerduration = 290000, countdown_increments = 29 }
-painkillerlist.yadylin = { painkillerpower = 5, painkillerduration = 505000, countdown_increments = 50 }
-painkillerlist.adrenalin = { painkillerpower = 2, painkillerduration = 2184000, countdown_increments = 105 }
-painkillerlist.etg = { painkillerpower = 4, painkillerduration = 1800000, countdown_increments = 90 }
-painkillerlist.medkit_army = { painkillerpower = 4, painkillerduration = 128000, countdown_increments = 25 }
-painkillerlist.medkit_scientic = { painkillerpower = 3, painkillerduration = 128000, countdown_increments = 25 }
-painkillerlist.stimpack = { painkillerpower = 2, painkillerduration = 128000, countdown_increments = 25 }
-painkillerlist.stimpack_army = { painkillerpower = 4, painkillerduration = 128000, countdown_increments = 25 }
-painkillerlist.stimpack_scientic = { painkillerpower = 3, painkillerduration = 128000, countdown_increments = 25 }
-painkillerlist.cocaine = { painkillerpower = 2, painkillerduration = 1644000, countdown_increments = 80 }
-painkillerlist.joint = { painkillerpower = 1, painkillerduration = 420000, countdown_increments = 42 }
-painkillerlist.marijuana = { painkillerpower = 1, painkillerduration = 652000, countdown_increments = 40 }
-painkillerlist.vodka = { painkillerpower = 1, painkillerduration = 300000, countdown_increments = 30 }
-painkillerlist.vodka2 = { painkillerpower = 1, painkillerduration = 300000, countdown_increments = 30 }
-painkillerlist.vodka_quality = { painkillerpower = 2, painkillerduration = 300000, countdown_increments = 30 }
-painkillerlist.bottle_metal = { painkillerpower = 2, painkillerduration = 300000, countdown_increments = 30 }
 
 exp_druglist = {}
 exp_druglist.lasttimestamp = time_global()
 exp_druglist.restoreduration = 0
 exp_druglist.restorepower = 0
 exp_druglist.countdown_increments = 0
-exp_druglist.drug_coagulant = { restorepower = 0.0005, countdown_increments = 438, restoretime = 438 }
 
 local modifiedregen = regen
 

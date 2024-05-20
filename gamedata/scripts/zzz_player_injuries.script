@@ -1642,7 +1642,7 @@ local function update_graphical_hud()
 	local wnd
 
 	-- Could determine open inventory state with `zzzz_dynahud.inventory_opened`
-	if not healthstatus or show_hud_type ~= 2 then
+	if not healthstatus or not zzzz_dynahud.inventory_opened then
 		if (hud_d ~= nil) then
 			hud:RemoveCustomStatic(staticname)
 			hud_d = nil

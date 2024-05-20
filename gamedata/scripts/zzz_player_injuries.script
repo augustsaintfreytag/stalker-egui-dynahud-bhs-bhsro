@@ -2823,13 +2823,13 @@ local function actor_menu_on_item_focus_lost(item)
 end
 
 local function actor_menu_on_mode_changed(mode, last_mode)
-	if last_mode == 1 then --inv closed
-		empty_preview_bars()
-		focused_item = nil
-	elseif last_mode == 4 then --looting closed
-		empty_preview_bars()
-		focused_item = nil
-	end
+	-- if last_mode == 1 then --inv closed
+	-- 	empty_preview_bars()
+	-- 	focused_item = nil
+	-- elseif last_mode == 4 then --looting closed
+	-- 	empty_preview_bars()
+	-- 	focused_item = nil
+	-- end
 end
 
 function on_game_start()

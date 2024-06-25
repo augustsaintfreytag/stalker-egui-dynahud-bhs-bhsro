@@ -43,11 +43,11 @@ function actor_on_update()
 				db.actor:set_health_ex(life_remove)
 			end
 
-			if actor_rad > 0.5 then
+			if actor_rad > 1.0 then
 				probability = math.ceil(85 / actor_rad)
 				chance = math.random(1, probability)
 
-				if chance == 1 or chance == 2 then
+				if chance == 1 then
 					local actor_health = db.actor.health
 					local actor_health_coeff = 0.5
 					local adj_actor_health = actor_health - (math.random(35, 80) * actor_health_coeff) / 1000

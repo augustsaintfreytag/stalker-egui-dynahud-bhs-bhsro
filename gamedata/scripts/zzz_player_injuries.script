@@ -2835,7 +2835,7 @@ end
 function on_game_start()
 	RegisterScriptCallback("on_option_change", on_option_change)              -- xcvb
 	RegisterScriptCallback("actor_on_first_update", actor_on_first_update)    -- xcvb
-	RegisterScriptCallback("on_key_press", on_key_press)
+	-- RegisterScriptCallback("on_key_press", on_key_press)
 	RegisterScriptCallback("save_state", save_state)                          -- xcvb
 	RegisterScriptCallback("load_state", load_state)                          -- xcvb
 	RegisterScriptCallback("actor_on_weapon_zoom_in", actor_on_weapon_zoom_in) -- xcvb

@@ -14,8 +14,8 @@ function actor_on_update()
 		local actor_rad = math.floor(db.actor.radiation * 10000 * 0.387) / 1000
 		local conditions = db.actor:cast_Actor():conditions()
 		local max_power = conditions and conditions:GetMaxPower()
-		local power_dif = 1 - actor_rad * 0.4
-		local max_power = max_power * power_dif
+		local power_dif = 1 - actor_rad * 0.3
+		local max_power = clamp(max_power * power_dif, 0.3, 1)
 
 		if db.actor.power > max_power then
 			db.actor.power = max_power

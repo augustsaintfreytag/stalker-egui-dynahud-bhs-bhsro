@@ -611,19 +611,22 @@ function set_stage_two()
 end
 
 local function bonebreak()
-	local helmet = (db.actor:item_in_slot(12) or db.actor:get_current_outfit())
-	if helmet then
-		muffle = ""
+	local pain_sound_index = math.random(1, 14)
+	local muffle = actor_effects.is_respi_on() and "m_" or ""
+
+	local pain_sound_file = "bhs\\" .. muffle .. "pain_" .. pain_sound_index
+
+	if AGDD_voiced_actor then
+		AGDD_voiced_actor.actor_speak(pain_sound_file, 1.0, 2000, 100, false, true, false, false)
 	else
-		muffle = ""
+		sound_ref = sound_object(pain_sound_file)
+		sound_ref:play(db.actor, 0, sound_object.s2d)
 	end
-	local sound_play = math.random(1, 13)
-	local file = "bhs\\" .. muffle .. "pain_" .. sound_play
-	file_to_say = sound_object(file)
-	file_to_say:play(db.actor, 0, sound_object.s2d)
-	local file2 = "bhs\\" .. "bone_crack"
-	file_to_say = sound_object(file2)
-	file_to_say:play(db.actor, 0, sound_object.s2d)
+
+	local bone_crack_sound_file = "bhs\\" .. "bone_crack"
+	sound_ref = sound_object(bone_crack_sound_file)
+	sound_ref:play(db.actor, 0, sound_object.s2d)
+
 	level.add_pp_effector("blur_bhs.ppe", math.random(655808, 655820), false)
 end
 
@@ -1857,26 +1860,27 @@ local function actor_on_footstep(material, power, hud_view, flags)
 		hit_power = (l_leg_power + r_leg_power) / 2
 
 		--	printf("hit_power: " .. (hit_power))
-		local file
 		local chance = math.random(1, 100)
+
 		if (hit_power > 0) and (state_cooldown < time_global()) and (chance <= 35) then
+			local pain_sound_file
+
 			if zzz_player_injuries_mcm.get_config("new_voice_sounds") then
-				local helmet = (db.actor:item_in_slot(12) or db.actor:get_current_outfit())
-				local sound_play = math.random(1, 13)
+				local pain_sound_index = math.random(1, 17)
+				local muffle = actor_effects.is_respi_on() and "m_" or ""
 
-				if helmet then
-					muffle = "m_"
-				else
-					muffle = ""
-				end
-
-				file = "bhs\\" .. muffle .. "pain_" .. sound_play
+				pain_sound_file = "bhs\\" .. muffle .. "hurt_" .. pain_sound_index
 			else
-				file = "actor\\pain_" .. sound_play
+				local hit_sound_index = math.random(1, 7)
+				pain_sound_file = "actor\\hurt_" .. hit_sound_index
 			end
 
-			file_to_say = sound_object(file)
-			file_to_say:play(db.actor, 0, sound_object.s2d)
+			if AGDD_voiced_actor then
+				AGDD_voiced_actor.actor_speak(pain_sound_file, 1.0, 2000, 100, false, true, false, false)
+			else
+				sound_ref = sound_object(pain_sound_file)
+				sound_ref:play(db.actor, 0, sound_object.s2d)
+			end
 
 			level.add_pp_effector("blur_bhs.ppe", math.random(655808, 655820), false)
 

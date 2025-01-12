@@ -1071,7 +1071,7 @@ local function actor_on_hit_callback(obj, amount, local_direction, who, bone_id)
 	save_health_status()
 end
 
-function actor_on_before_hit(hit, bone_id)
+function actor_on_hit(hit, bone_id)
 	if hit.type == 7 then
 		hit.type = "Strike"
 	elseif hit.type == 6 then
@@ -2848,7 +2848,7 @@ function on_game_start()
 	RegisterScriptCallback("actor_on_sleep", actor_on_sleep)
 
 	if not grok_actor_damage_balancer then
-		RegisterScriptCallback("actor_on_before_hit", actor_on_before_hit)
+		RegisterScriptCallback("actor_on_before_hit", actor_on_hit)
 	end
 
 	RegisterScriptCallback("actor_on_hit_callback", actor_on_hit_callback)

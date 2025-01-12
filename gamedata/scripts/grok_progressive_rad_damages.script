@@ -1,7 +1,7 @@
 grok_rads = 0
 step = 1000
 
-function actor_on_before_hit(shit)
+function actor_on_hit(shit)
 	if (shit.type ~= 3) then
 		return
 	end
@@ -72,6 +72,6 @@ function actor_on_update()
 end
 
 function on_game_start()
-	RegisterScriptCallback("actor_on_before_hit", actor_on_before_hit)
+	RegisterScriptCallback("actor_on_before_hit", actor_on_hit)
 	RegisterScriptCallback("actor_on_update", actor_on_update)
 end

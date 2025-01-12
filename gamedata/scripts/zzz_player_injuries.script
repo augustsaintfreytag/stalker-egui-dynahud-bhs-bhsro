@@ -241,7 +241,7 @@ end
 function change_regen_value(value)
 	timeregen = time_global()
 	regen = value
-	printf("Set Regen to %s", value)
+	-- printf("Set Regen to %s", value)
 end
 
 function get_temp_health(sec, limb)
@@ -642,14 +642,16 @@ local function received_damage(amount)
 
 	if hit.bone_id_adj then
 		choosen_hitbox = hit.bone_id_adj
-		printf("! Applying %s damage to %s. Damagescale: %s", damage, choosen_hitbox, damagescale)
+		-- printf("! Applying %s damage to %s. Damagescale: %s", damage, choosen_hitbox, damagescale)
 	else
 		local index = 0
 		for k, v in pairs(health) do
 			index = index + 1
 		end
 		local random_number = math.random(1, index)
+
 		-- trace_this("random"..random_number.."\n")
+
 		if random_number == 1 then
 			choosen_hitbox = "head"
 		elseif random_number == 2 then
@@ -663,7 +665,8 @@ local function received_damage(amount)
 		elseif random_number == 6 then
 			choosen_hitbox = "rightleg"
 		end
-		printf("! Applying damage to random bone, %s. Damagescale: %s", choosen_hitbox, damagescale)
+
+		-- printf("! Applying damage to random bone, %s. Damagescale: %s", choosen_hitbox, damagescale)
 	end
 
 	if hit.type == "Explosive" then -- explosives = bad for health
@@ -834,7 +837,8 @@ local function received_damage(amount)
 	end
 
 	if damage > 0 and (bhs_exp_mode or bhs_bleed) then
-		printf("! Damage spilling over! Spillover: %s", damage)
+		-- printf("! Damage spilling over! Spillover: %s", damage)
+
 		while damage > 0 do
 			local damage_parts = 1
 			local damage_rest = 0
@@ -851,8 +855,9 @@ local function received_damage(amount)
 				break
 			end
 			if damage >= count then
-				printf("! Enough damage(%s) to hit all healthy limbs(%s) %s times", damage, count, damage / count)
-				printf("! Torso counts as 2")
+				-- printf("! Enough damage(%s) to hit all healthy limbs(%s) %s times", damage, count, damage / count)
+				-- printf("! Torso counts as 2")
+
 				damage_parts = math.floor(damage / count)
 				for k in pairs(health) do
 					if health[k] > 0 then
@@ -879,11 +884,11 @@ local function received_damage(amount)
 						surgeryhp[k] = 0
 					end
 				end
-				printf("! Damage left: %s", damage)
-				printf("! Spillover pass finished, damage left: %s", damage)
+				-- printf("! Damage left: %s", damage)
+				-- printf("! Spillover pass finished, damage left: %s", damage)
 			else
-				printf("! NOT enough damage(%s) to hit all healthy limbs(%s) at least once.", damage, count)
-				printf("! Hitting randomly")
+				-- printf("! NOT enough damage(%s) to hit all healthy limbs(%s) at least once.", damage, count)
+				-- printf("! Hitting randomly")
 				damage_rest = damage % count
 				local index = 0
 				for k, v in pairs(health) do
@@ -908,12 +913,13 @@ local function received_damage(amount)
 						health[choosen_hitbox] = health[choosen_hitbox] - 1
 						surgeryhp[choosen_hitbox] = 0
 						damage_rest = damage_rest - 1
-						printf("! Hitting %s once", choosen_hitbox)
+						-- printf("! Hitting %s once", choosen_hitbox)
 					else
-						printf("! Hitting %s but it is damaged, trying again", choosen_hitbox)
+						-- printf("! Hitting %s but it is damaged, trying again", choosen_hitbox)
 					end
 				end
-				printf("! Finished hitting, no damage left. Breaking")
+
+				-- printf("! Finished hitting, no damage left. Breaking")
 				break
 			end
 		end
@@ -1045,18 +1051,20 @@ local function actor_on_hit_callback(obj, amount, local_direction, who, bone_id)
 	if hit.fall then
 		text = "both legs"
 	end
-	printf(
-		"! Actor got hit in %s, random? %s, redirected? %s, damagescale: %s, damage threshold: %s. Original bone: %s, damage type: %s",
-		text, random, redirect, damagescale, damage_threshold, hit.bone_id, hit.type)
-	printf("! Damage: %s", damage)
+	-- printf(
+	-- 	"! Actor got hit in %s, random? %s, redirected? %s, damagescale: %s, damage threshold: %s. Original bone: %s, damage type: %s",
+	-- 	text, random, redirect, damagescale, damage_threshold, hit.bone_id, hit.type)
+	-- printf("! Damage: %s", damage)
 	--printf("! Whodunit: %s",who:id())
-	if not hit.bone_id then
-		printf("! NOT A PROPER HIT! BONEID: %s, WHODUNIT: %s", last_boneid, who:id())
-	end
+
+	-- if not hit.bone_id then
+	-- 	printf("! NOT A PROPER HIT! BONEID: %s, WHODUNIT: %s", last_boneid, who:id())
+	-- end
+
 	if damage > damage_threshold then
 		if hit.fall then
 			damage = damage * fall_mult
-			printf("! Fall damage increased to %s, fall multiplier: %s", damage, fall_mult)
+			-- printf("! Fall damage increased to %s, fall multiplier: %s", damage, fall_mult)
 		end
 		received_damage(damage)
 	else
@@ -2058,7 +2066,7 @@ local function HealOne(healpower, health, surgeryhp)
 	else
 		if (medkit_is_splint and healpower > 0) or not splinting then loopcounter = 0 end
 		while healamount > 0 do
-			printf("Trying to limb with %s, healpower: %s", loopcounter, healpower)
+			-- printf("Trying to limb with %s, healpower: %s", loopcounter, healpower)
 			for k, v in pairs(health, functor) do
 				adjustedhealth =
 					v --Double health for arm&leg for deciding what to heal, since limbs have half hp of head/torso
@@ -2087,7 +2095,7 @@ local function HealOne(healpower, health, surgeryhp)
 end
 
 function ArtiHeal(healpower)
-	printf("Artihealed or campfire once")
+	-- printf("Artihealed or campfire once")
 	HealOne(healpower, health, surgeryhp)
 end
 
@@ -2240,7 +2248,7 @@ function actor_on_update()
 				if exp_druglist.countdown_increments == 1 or exp_druglist.countdown_increments < 0 then
 					db.actor:change_health(exp_druglist.restorepower)
 					exp_druglist.countdown_increments = 0
-					printf("(EXP) Restore effect ran out")
+					-- printf("(EXP) Restore effect ran out")
 					exp_druglist.restoreduration = 0
 					exp_druglist.restorepower = 0
 					exp_druglist.lasttimestamp = time_global()
@@ -2265,14 +2273,14 @@ function actor_on_update()
 		else
 			db.actor:change_health(amount)
 		end
-		printf("Damage received: %s, Type: %s", amount, hit.type)
+		-- printf("Damage received: %s, Type: %s", amount, hit.type)
 		hit.type = nil
 	elseif amount > 0.001 and bhs_exp_mode then
-		printf("Typeless damage received: %s", amount)
+		-- printf("Typeless damage received: %s", amount)
 	end
 
 	if db.actor.health <= 0 and bhs_exp_mode then
-		printf("Allowing death")
+		-- printf("Allowing death")
 		hit.death = true
 		db.actor.health = 1
 		db.actor.health = -1
@@ -2344,7 +2352,7 @@ function actor_on_update()
 			if time_global() - painkillerlist.lasttimestamp > painkillerlist.painkillerduration then
 				if painkillerlist.countdown_increments == 1 or painkillerlist.countdown_increments < 0 then
 					painkillerlist.countdown_increments = 0
-					printf("Painkillers ran out")
+					-- printf("Painkillers ran out")
 					painkillerlist.painkillerpower = 0
 					painkillerlist.painkillerduration = 0
 					painkillerlist.lasttimestamp = time_global()
@@ -2443,10 +2451,10 @@ function actor_on_update()
 	if health.head == 0 then
 		hit.death = true
 		db.actor.health = -1
-		printf("Allowing death from head reaching 0")
+		-- printf("Allowing death from head reaching 0")
 	end
 	if hit.death then
-		printf("Allowing death")
+		-- printf("Allowing death")
 		db.actor.health = -1
 	end
 end
@@ -2467,11 +2475,11 @@ local function actor_on_before_death(whoID, flags)
 				hit.apply = false
 			else
 				db.actor.health = myhealth
-				printf("!Revesing death damage")
+				-- printf("!Revesing death damage")
 			end
 		end
 		if db.actor.health <= 0 then
-			printf("!Allowing death")
+			-- printf("!Allowing death")
 			hit.death = true
 		end
 		flags.ret_value = false
@@ -2617,7 +2625,7 @@ local function use_medical_item(name, health, timedheal, surgeryhp, ispreview)
 end
 
 local function actor_on_sleep(hours)
-	printf("Sleepie time for: %s", hours)
+	-- printf("Sleepie time for: %s", hours)
 	local hoursleft = hours
 
 	for k, v in pairs(timedhp) do
@@ -2631,16 +2639,16 @@ local function actor_on_sleep(hours)
 	end
 
 	hoursleft = hoursleft * sleep_heal_power
-	printf("Adjusted hours: %s", hoursleft)
+	-- printf("Adjusted hours: %s", hoursleft)
 
 	if sleep_heal then
 		if sleep_heal_logic then
-			printf("Sleep logic is on")
+			-- printf("Sleep logic is on")
 			for _ = 1, hoursleft do
 				HealOne(0, health, surgeryhp)
 			end
 		else
-			printf("Sleep logic is off")
+			-- printf("Sleep logic is off")
 			local head_difference = maxhp.head - health.head
 
 			if head_difference > 0 then

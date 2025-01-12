@@ -30,15 +30,20 @@ All your base are belong to us!
 local ini_eff = {}
 enable_animations = true
 mutant_loot_mod = true
+
 local ea_debug = false
 ini_eff = ini_file("items\\items\\animations_settings.ltx")
+
 local active_slot, anim_exist_tm, wpn, item_usage_snd, monster_usage_snd, item, anim_use_time, obj_m, used_monster = nil
 used_item, ea_flag, fake_monster, det_active, anim_section = nil
 
 function on_game_start()
 	RegisterScriptCallback("on_game_load", on_game_load)
 	RegisterScriptCallback("on_option_change", loadsettings)
-	RegisterScriptCallback("on_key_release", on_key_release)
+
+	-- if not ui_mcm then
+	-- 	RegisterScriptCallback("on_key_release", on_key_release)
+	-- end
 end
 
 function on_game_load()
@@ -47,22 +52,17 @@ end
 
 --< Addon control
 function on_key_release(key)
-	local bind = dik_to_bind(key)
-	if (bind == key_bindings.kCAM_ZOOM_OUT) then
-		enable_animations = not enable_animations
-	end
+	-- local bind = dik_to_bind(key)
+	-- if (bind == key_bindings.kCAM_ZOOM_OUT) then
+	-- 	enable_animations = not enable_animations
+	-- end
 end
 
 function loadsettings()
 	if ui_mcm then -- here we test to make sure ui_mcm exists before trying to call it's get function.
-		enable_animations = ui_mcm.get("EA_settings/enable_animations") or ui_options.get("video/player/animations")
+		enable_animations = ui_mcm.get("EA_settings/enable_animations") and ui_options.get("video/player/animations")
 		mutant_loot_mod = ui_mcm.get("EA_settings/mutant_loot")
 		ea_debug = ui_mcm.get("EA_settings/ea_debug")
-
-		if enable_animations == false then
-			mutant_loot_mod = false
-			ui_mcm.set("EA_settings/mutant_loot", false)
-		end
 	else
 		mutant_loot_mod = ini_eff:r_bool_ex("anim_settings", "mutant_loot_mod")
 		enable_animations = ui_options.get("video/player/animations")
@@ -79,6 +79,8 @@ end
 
 --< Animations engine
 function anim_prepare()
+	printf("SAINT - Enhanced Animations preparing animations with animations.")
+
 	game.only_allow_movekeys(true)
 	hide_det()
 
@@ -92,10 +94,13 @@ function anim_prepare()
 end
 
 function use_item(obj)
+	printf("SAINT - Enhanced Animations using item with animations: " .. tostring(enable_animations) .. ".")
+
 	item = obj:section()
 	local outfit = db.actor:item_in_slot(7)
 	outfit = outfit and outfit:section() or item
 	local hud = SYS_GetParam(0, outfit, "player_hud_section", "")
+
 	if hud:find("exo$") then
 		item = item .. "_exo"
 		if not ini_eff:r_string_ex(item, "snd") then
@@ -103,6 +108,7 @@ function use_item(obj)
 			item = obj:section()
 		end
 	end
+
 	obj_m = obj
 	used_item = item
 	hide_hud_inventory()
@@ -117,19 +123,26 @@ function monster_on_actor_use(obj)
 		anim_exist_tm = nil
 		return
 	end
+
+
 	wpn = db.actor:active_item()
 	if wpn then
 		wpn = wpn:clsid() == clsid.wpn_knife_s and wpn:section() or "wpn_knife3"
 		wpn = string.gsub(wpn, "-", "_")
 	end
+
 	item_knife.degradate()
 	used_monster = obj
+
 	level.disable_input()
 	anim_prepare()
 	recalc_actor_campos()
 end
 
 function start_anim(anim_section_hud)
+	ptintf("SAINT - Enhanced Animations starting animations '" ..
+		anim_section_hud .. "' with animations: " .. tostring(enable_animations) .. ".")
+
 	UnregisterScriptCallback("actor_on_update", actor_on_update)
 	fov_anim_manager.change_fov(0.45)
 
@@ -201,7 +214,9 @@ function actor_on_update()
 		game.only_allow_movekeys(false)
 		actor_menu.set_msg(1, "PLEASE EXIT THE GAME AND SEND LOG FILE TO FEEL_FRIED", 5)
 	end
+
 	local anim_section_hud = nil
+
 	if used_monster then
 		anim_section_hud = "item_ea_harv_" .. (wpn or "wpn_knife3") .. "_hud"
 		start_anim(anim_section_hud)
@@ -209,9 +224,11 @@ function actor_on_update()
 		failure_timer = 0
 		return
 	end
+
 	failure_timer = 0
 	anim_section_hud = anim_section .. "_hud"
 	anim_section = nil
+
 	start_anim(anim_section_hud)
 	anim_manager_item(anim_section_hud)
 end
@@ -303,11 +320,15 @@ end
 --< Time Events
 function call_my_slot_back()
 	game.only_allow_movekeys(false)
+
 	if take_item_anim and fake_monster then
 		return true
 	end
+
 	db.actor:activate_slot(active_slot or 0)
+
 	if det_active then det_active:switch_state(1) end
+
 	return true
 end
 
